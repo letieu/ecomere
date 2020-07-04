@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use Intervention\Image\Image;
+use Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use  App\Models\Product;
+
 class ProductController extends Controller
+
 {
+
+
+    public function search(Request $request){
+
+        $product = Product::find(2);
+        return $product->category;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -30,10 +39,11 @@ class ProductController extends Controller
         if ($request->get('img')) {
             $image = $request->get('img');
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            Image::make($request->get('img'))->save(public_path('images/') . $name);
-            $product->img = $name;
+            Image::make($request->get('img'))->save(public_path("images/") . $name);
+            $product->img = "/images/" . $name;
         }
-       
+        $product->save();
+        return $product->img;
     }
 
     /**
@@ -56,6 +66,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+
+        if ($request->get('img')) {
+            $image = $request->get('img');
+            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            Image::make($request->get('img'))->save(public_path("images/") . $name);
+            $product->img = "/images/" . $name;
+        }
+        unset($request["img"]);
         $product->update($request->all());
         return $product;
     }
@@ -66,8 +84,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($product)
+    public function destroy(Request $request, Product $product)
     {
-        return $product->delete();
+        $product->delete();
+        return 'delete ok';
     }
+  
 }

@@ -12,6 +12,7 @@
 <script>
 export default {
   props: ["name", "img", "id", "writer", "price"]
+
 };
 </script>
 
@@ -19,8 +20,9 @@ export default {
 .product {
   padding: 5px 15px;
   &_img {
-    max-width: 250px;
-    max-height: 250px;
+    max-width: 150px;
+    max-height: 200px;
+    padding-bottom: 20px;
   }
   &_name {
     color: #494747;

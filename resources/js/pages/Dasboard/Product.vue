@@ -77,11 +77,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(product,index) in products" :key="index">
-          <th scope="row">{{product.id}}</th>
+        <tr v-for="(product,index) in products" :key="index" class="product">
+          <td scope="row">{{product.id}}</td>
           <td>{{product.name}}</td>
           <td>{{product.price}}</td>
-          <td>{{product.img}}</td>
+          <td>
+            <img class="image-product" :src="product.img" alt />
+          </td>
           <td>
             <button type="button" class="btn btn-info" @click="showEdit(product)">edit</button>
             <button type="button" class="btn btn-danger" @click="destroyProduct(product)">delete</button>
@@ -115,7 +117,6 @@ export default {
       document.getElementById("price").value = product.price;
       document.getElementById("writer").value = product.writer;
       document.getElementById("describe").value = product.describe;
-      document.getElementById("img").value = product.img;
       this.creating = true;
       this.editingID = product.id;
     },
@@ -125,7 +126,7 @@ export default {
         price: document.getElementById("price").value,
         writer: document.getElementById("writer").value,
         describe: document.getElementById("describe").value,
-        img: document.getElementById("img").value
+        img: this.image
       };
       for (let prop in product) {
         if (product[prop] == null || product[prop] == "") {
@@ -166,12 +167,14 @@ export default {
       let files = event.target.files || event.dataTransfer.files;
       if (!files.length) return;
       this.createImage(files[0]);
+      console.log("jljljl");
     },
-    createImage(file){
+    createImage(file) {
       let reader = new FileReader();
-      reader.onload = (event)=>{
+      reader.onload = event => {
         this.image = event.target.result;
-      }
+        console.log(this.image);
+      };
       reader.readAsDataURL(file);
     }
   }
@@ -184,5 +187,8 @@ button.btn {
 }
 .new {
   box-shadow: 2px 2px 2px black;
+}
+.image-product {
+  height: 60px;
 }
 </style>

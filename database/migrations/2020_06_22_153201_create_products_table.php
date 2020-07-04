@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->string("writer");
             $table->string("img");
             $table->string("describe");
+            $table->integer("category_id")->default(1);
             $table->timestamps();
         });
     }

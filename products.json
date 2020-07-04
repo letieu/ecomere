@@ -1,0 +1,14 @@
+[
+   {
+      "name": "seed 1",
+      "price": 2222,
+      "describe": "ok",
+      "writer": "tieu"
+   },
+   {
+      "name": "seed 2",
+      "price": 2222,
+      "describe": "ok",
+      "writer": "tieu"
+   }
+]

@@ -5,7 +5,7 @@
         <h2>{{name}}</h2>
       </div>
     </div>
-    <owl-carousel :items="4.5" :dots="false" :navText="navText">
+    <owl-carousel :items="4.5" :dots="false" :navText="navText" v-if="loaded">
       <Product
         v-for="(product,index) in products"
         :key="index"
@@ -30,56 +30,21 @@ export default {
   props: ["id"],
   data() {
     return {
-      navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+      navText: [
+        '<i class="fas fa-chevron-left"></i>',
+        '<i class="fas fa-chevron-right"></i>'
+      ],
       name: "Category name",
+      loaded: false,
       products: [
         {
-          id: "1",
-          name: "The catcher in the rye",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "The catcher in the rye (Bắt trẻ đồng xanh)",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "JD Salinger "
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
+          describe: "bla bal",
+          id: 1,
+          img: "/images/1593859352.jpeg",
+          name: "Bay vien ngoc rong",
+          price: 8888,
+          bla: "jsldfjl",
+          create_at: "djfl"
         }
       ]
     };
@@ -88,6 +53,28 @@ export default {
     OwlCarousel,
     Bbutton,
     Product
+  },
+  mounted() {
+    this.loadData();
+  },
+  methods: {
+    loadData() {
+      axios.get("/api/products").then(response => {
+        this.loaded = true;
+        console.log(response.data);
+        for (let product of response.data) {
+          this.products.push({
+            id: product.id,
+            img: product.img,
+            name: product.name,
+            price: product.price,
+            describe: product.describe,
+            writer: product.writer
+          });
+        }
+        this.loaded = true
+      });
+    }
   }
 };
 </script>
@@ -127,13 +114,12 @@ export default {
   width: 100%;
   top: 100px;
   background: chartreuse;
-  .owl-next{
+  .owl-next {
     position: absolute;
     right: -100px;
     font-size: 30px;
-
   }
-  .owl-prev{
+  .owl-prev {
     position: absolute;
     left: -100px;
     font-size: 30px;
