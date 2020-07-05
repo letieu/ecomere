@@ -49,8 +49,10 @@
             </div>
             @endif
         </div> -->
+        <Cart> </Cart>
         <Pheader ></Pheader>
         <router-view></router-view>
+        <Pfooter></Pfooter>
     </div>
 
 </body>

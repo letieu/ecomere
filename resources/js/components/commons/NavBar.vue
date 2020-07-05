@@ -16,16 +16,19 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/">
               Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="/res?name=&category=2">Kinh điển</a>
           </li>
            <li class="nav-item">
-            <a class="nav-link" href="#">Book</a>
+            <a class="nav-link" href="https://letieu.github.io">My CV</a>
+          </li>
+          <li class="nav-item" v-show="admin">
+            <a class="nav-link" href="/dasboard/product">Dasboard</a>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -55,6 +58,17 @@
 import Search from '../commons/Search.vue';
 import UserMenu from '../commons/UserMenu.vue';
 export default {
+    created(){
+      bus.$on('userDetail',data=>{
+        this.admin = data.admin
+        console.log(this.admin)
+      })
+    },
+    data(){
+      return{
+        admin:false
+      }
+    },
     components :{
         UserMenu,
         Search

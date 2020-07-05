@@ -2,10 +2,10 @@
   <div class="category-slider container">
     <div class="row">
       <div class="category-slider_header">
-        <h2>{{name}}</h2>
+        <h2>{{categoryName}}</h2>
       </div>
     </div>
-    <owl-carousel :items="4.5" :dots="false" :navText="navText">
+    <owl-carousel :items="4.5" :dots="false" :navText="navText" v-if="loaded">
       <Product
         v-for="(product,index) in products"
         :key="index"
@@ -17,7 +17,9 @@
       />
     </owl-carousel>
     <div class="row category-slider_footer">
-      <Bbutton label="Xem tất cả" />
+      <a :href="`/res?category=${id}`">
+        <Bbutton label="Xem tất cả" />
+      </a>
     </div>
   </div>
 </template>
@@ -27,67 +29,42 @@ import OwlCarousel from "vue-owl-carousel";
 import Bbutton from "../ui/Bbutton.vue";
 import Product from "../commons/Product.vue";
 export default {
-  props: ["id"],
+  props: ["categoryName", "id"],
   data() {
     return {
-      navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
-      name: "Category name",
-      products: [
-        {
-          id: "1",
-          name: "The catcher in the rye",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "The catcher in the rye (Bắt trẻ đồng xanh)",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "JD Salinger "
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        },
-        {
-          id: "1",
-          name: "ten sach",
-          price: "20000",
-          img:
-            "https://salt.tikicdn.com/cache/280x280/ts/product/ca/c9/70/743112ce044389f3155b72bb2629ca2f.jpg",
-          writer: "tieu"
-        }
-      ]
+      navText: [
+        '<i class="fas fa-chevron-left"></i>',
+        '<i class="fas fa-chevron-right"></i>'
+      ],
+      loaded: false,
+      products: []
     };
   },
   components: {
     OwlCarousel,
     Bbutton,
     Product
+  },
+  mounted() {
+    this.loadData();
+  },
+  methods: {
+    loadData() {
+      axios.get(`/api/products?category=${this.id}`).then(response => {
+        this.loaded = true;
+        for (let product of response.data.data) {
+          this.products.push({
+            id: product.id,
+            img: product.img,
+            name: product.name,
+            price: product.price,
+            describe: product.describe,
+            writer: product.writer
+          });
+        }
+        this.loaded = true;
+      });
+    }
   }
 };
 </script>
@@ -127,13 +104,12 @@ export default {
   width: 100%;
   top: 100px;
   background: chartreuse;
-  .owl-next{
+  .owl-next {
     position: absolute;
     right: -100px;
     font-size: 30px;
-
   }
-  .owl-prev{
+  .owl-prev {
     position: absolute;
     left: -100px;
     font-size: 30px;

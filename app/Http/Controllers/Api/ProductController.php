@@ -2,22 +2,32 @@
 
 namespace App\Http\Controllers\Api;
 
-use Intervention\Image\Image;
+use Image;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use  App\Models\Product;
+use phpDocumentor\Reflection\Types\Null_;
+
 class ProductController extends Controller
+
 {
+
+
+ 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Product::all();
+        $products = Product::query()
+        ->name($request)
+        ->price($request)
+        ->category($request);        
+        return $products->paginate(16);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -30,10 +40,11 @@ class ProductController extends Controller
         if ($request->get('img')) {
             $image = $request->get('img');
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            Image::make($request->get('img'))->save(public_path('images/') . $name);
-            $product->img = $name;
+            Image::make($request->get('img'))->save(public_path("images/") . $name);
+            $product->img = "/images/" . $name;
         }
-       
+        $product->save();
+        return $product;
     }
 
     /**
@@ -56,6 +67,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+
+        if ($request->get('img')) {
+            $image = $request->get('img');
+            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            Image::make($request->get('img'))->save(public_path("images/") . $name);
+            $product->img = "/images/" . $name;
+        }
+        unset($request["img"]);
         $product->update($request->all());
         return $product;
     }
@@ -66,8 +85,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($product)
+    public function destroy(Request $request, Product $product)
     {
-        return $product->delete();
+        $product->delete();
+        return 'delete ok';
     }
+  
 }

@@ -13,5 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('user','UserController@getDetail');
+
+Route::get('products/search','Api\ProductController@search')->name('product.search');
 Route::apiResource('products', 'Api\ProductController');
 

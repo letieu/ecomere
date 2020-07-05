@@ -7,18 +7,22 @@ import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router';
 import axios from 'axios';
 import routes from './route.js';
+import Vue from 'vue';
 
 import PageHeader from './components/layouts/Header.vue';
 import PageFooter from './components/layouts/Footer.vue';
+import Cart from './components/commons/Cart.vue';
 
+window.bus = new Vue();
 
 require('./bootstrap');
 
 window.Vue = require('vue');
 window.axios = axios;
 window.host = '';
+
 Vue.use(VueRouter);
-Vue.use(BootstrapVue) 
+Vue.use(BootstrapVue) ;
 
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -38,6 +42,10 @@ import '@fortawesome/fontawesome-free/js/all.js'
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('Pheader', PageHeader)
+Vue.component('Pfooter', PageFooter)
+Vue.component('cart', Cart)
+
+
 const router = new VueRouter({
     mode:'history',
     routes

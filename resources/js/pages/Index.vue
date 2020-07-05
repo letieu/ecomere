@@ -6,9 +6,11 @@
       <Top class="top" />
     </div>
 
-    <Category id="1" />
+    <Category id="1" categoryName="Văn Học"/>
     <hot-tag />
-    <Category id="2" />
+    <Category id="2" categoryName="Tiểu thuyết"/>
+    <Category id="4" categoryName="Light novel"/>
+
   </div>
 </template>
 
