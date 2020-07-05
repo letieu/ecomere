@@ -4,29 +4,30 @@ namespace App\Http\Controllers\Api;
 
 use Image;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use  App\Models\Product;
+use phpDocumentor\Reflection\Types\Null_;
 
 class ProductController extends Controller
 
 {
 
 
-    public function search(Request $request){
-
-        $product = Product::find(2);
-        return $product->category;
-    }
+ 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Product::all();
+        $products = Product::query()
+        ->name($request)
+        ->price($request)
+        ->category($request);        
+        return $products->paginate(16);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -43,7 +44,7 @@ class ProductController extends Controller
             $product->img = "/images/" . $name;
         }
         $product->save();
-        return $product->img;
+        return $product;
     }
 
     /**

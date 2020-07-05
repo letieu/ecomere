@@ -8,7 +8,7 @@
       <h3 class="user-name">{{user.name}}</h3>
       <a href="#">Thông tin thanh toán</a>
       <a href="#">Đơn hàng của tôi</a>
-      <a href="/logout">Đăng xuất (ID: user.id)</a>
+      <a href="/logout">Đăng xuất (ID: {{user.id}})</a>
     </div>
   </div>
 </template>
@@ -28,7 +28,9 @@ export default {
     getUser() {
       axios.get("/user").then(response => {
         let user = response.data.user;
-
+        if (user && user.role == 1) {
+          bus.$emit("userDetail", { admin: true });
+        }
         if (user) {
           this.login = true;
           this.user = user;
@@ -40,4 +42,15 @@ export default {
 </script>
 
 <style>
+.user-menu > div {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  flex-direction: column;
+  max-width: 300px;
+}
+.user-menu > div a {
+  color: darkslategrey;
+  font-size: 15px;
+}
 </style>

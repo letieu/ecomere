@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use function GuzzleHttp\json_decode;
+use Faker\Factory;
+use Illuminate\Support\Facades\DB;
 
 class ProductSeeder extends Seeder
 {
@@ -12,19 +14,18 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $productFile = fopen('products.json','r');
-        $productsData = fread($productFile,filesize('products.json'));
-        fclose($productFile);
-        $productsData = json_decode($productsData);
-        foreach($productsData as $product){
-            DB::table('products')->insert([
-                "name"=>$product->name,
-                "price"=>$product->price,
-                "describe"=>$product->describe,
-                "writer"=>$product->writer,
-                "img"=>'none'
-
-            ]);
+        $faker = Factory::create();
+        for ($i =0; $i<200;$i++){
+            DB::table('products')->insert(
+                [
+                    "name"=> $faker->catchPhrase,
+                    "writer"=>$faker->name,
+                    "describe"=>$faker->text,
+                    "price"=>$faker->numberBetween(50000,500000),
+                    "category_id"=>$faker->numberBetween(1,4),
+                    "img"=>"/images/" . strval($faker->numberBetween(1,10)) .".jpg"
+                ]
+                );
         }
     }
 }

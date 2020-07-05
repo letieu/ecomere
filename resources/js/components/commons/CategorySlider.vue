@@ -2,7 +2,7 @@
   <div class="category-slider container">
     <div class="row">
       <div class="category-slider_header">
-        <h2>{{name}}</h2>
+        <h2>{{categoryName}}</h2>
       </div>
     </div>
     <owl-carousel :items="4.5" :dots="false" :navText="navText" v-if="loaded">
@@ -17,7 +17,9 @@
       />
     </owl-carousel>
     <div class="row category-slider_footer">
-      <Bbutton label="Xem tất cả" />
+      <a :href="`/res?category=${id}`">
+        <Bbutton label="Xem tất cả" />
+      </a>
     </div>
   </div>
 </template>
@@ -27,26 +29,15 @@ import OwlCarousel from "vue-owl-carousel";
 import Bbutton from "../ui/Bbutton.vue";
 import Product from "../commons/Product.vue";
 export default {
-  props: ["id"],
+  props: ["categoryName", "id"],
   data() {
     return {
       navText: [
         '<i class="fas fa-chevron-left"></i>',
         '<i class="fas fa-chevron-right"></i>'
       ],
-      name: "Category name",
       loaded: false,
-      products: [
-        {
-          describe: "bla bal",
-          id: 1,
-          img: "/images/1593859352.jpeg",
-          name: "Bay vien ngoc rong",
-          price: 8888,
-          bla: "jsldfjl",
-          create_at: "djfl"
-        }
-      ]
+      products: []
     };
   },
   components: {
@@ -59,10 +50,9 @@ export default {
   },
   methods: {
     loadData() {
-      axios.get("/api/products").then(response => {
+      axios.get(`/api/products?category=${this.id}`).then(response => {
         this.loaded = true;
-        console.log(response.data);
-        for (let product of response.data) {
+        for (let product of response.data.data) {
           this.products.push({
             id: product.id,
             img: product.img,
@@ -72,7 +62,7 @@ export default {
             writer: product.writer
           });
         }
-        this.loaded = true
+        this.loaded = true;
       });
     }
   }
