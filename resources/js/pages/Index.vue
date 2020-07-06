@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <script src="https://unpkg.com/scrollreveal"></script>
     <div class="index-top">
       <BannerSlider />
       <Top class="top" />
@@ -21,6 +21,9 @@ import Top from "../components/commons/Top.vue";
 import Category from "../components/commons/CategorySlider";
 import HotTag from '../components/commons/HotTags.vue';
 export default {
+  mounted(){
+    ScrollReveal().reveal('.category-slider');
+  }
   components: {
     Header,
     BannerSlider,
