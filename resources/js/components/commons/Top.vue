@@ -6,12 +6,10 @@
       </div>
     </div>
     <div class="row show-more">
-      <a href="#top" v-show="showNumber == 4" @click="showNumber=8">
+      <a href="http://tieushop.herokuapp.com/res?category=1" v-show="showNumber == 4" >
         <Bbutton label="xem thêm " />
       </a>
-      <a href="#top" v-show="showNumber == 8" @click="showNumber=4">
-        <Bbutton label="Thu nhỏ " />
-      </a>
+
     </div>
   </div>
 </template>
